@@ -78,6 +78,27 @@ public class JavaFxUtils {
     alert.showAndWait();
   }
 
+  public static @Nullable String showCustomDialog(String title, String header, String context, String... options) {
+    List<ButtonType> buttonTypeList = new ArrayList<>();
+    for (String option : options) {
+      ButtonType buttonType = new ButtonType(option);
+      buttonTypeList.add(buttonType);
+    }
+
+    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    alert.setTitle(title);
+    alert.setHeaderText(header);
+    alert.setContentText(context);
+
+    // Init custom buttons
+    alert.getButtonTypes().setAll(buttonTypeList);
+    Optional<ButtonType> dialogResult = alert.showAndWait();
+    if (dialogResult.isPresent()) {
+      return dialogResult.get().getText();
+    }
+    return null;
+  }
+
   public static boolean isOnKeyPressedCtrlC(KeyEvent event) {
     return KEY_CODE_COPY1.match(event) || KEY_CODE_COPY2.match(event) || KEY_CODE_COPY3.match(event);
   }
@@ -134,10 +155,14 @@ public class JavaFxUtils {
         itemsBuilder.append(selectedItem == null || selectedItem.valueProperty().get() == null ? "" : selectedItem.valueProperty().get().toString());
       }
 
-      final ClipboardContent clipboardContent = new ClipboardContent();
-      clipboardContent.putString(itemsBuilder.toString());
-      Clipboard.getSystemClipboard().setContent(clipboardContent);
+      copyToClipboard(itemsBuilder.toString());
     }
+  }
+
+  public static void copyToClipboard(String text) {
+    final ClipboardContent clipboardContent = new ClipboardContent();
+    clipboardContent.putString(text);
+    Clipboard.getSystemClipboard().setContent(clipboardContent);
   }
 
   //TODO: unit test coverage
