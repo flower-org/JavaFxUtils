@@ -93,10 +93,9 @@ public class JavaFxUtils {
     // Init custom buttons
     alert.getButtonTypes().setAll(buttonTypeList);
     Optional<ButtonType> dialogResult = alert.showAndWait();
-    if (dialogResult.isPresent()) {
-      return dialogResult.get().getText();
-    }
-    return null;
+    return dialogResult
+            .map(ButtonType::getText)
+            .orElse(null);
   }
 
   public static boolean isOnKeyPressedCtrlC(KeyEvent event) {
@@ -119,9 +118,7 @@ public class JavaFxUtils {
         itemsBuilder.append(itemBuilder);
       }
 
-      final ClipboardContent clipboardContent = new ClipboardContent();
-      clipboardContent.putString(itemsBuilder.toString());
-      Clipboard.getSystemClipboard().setContent(clipboardContent);
+      copyToClipboard(itemsBuilder.toString());
     }
   }
 
@@ -141,9 +138,7 @@ public class JavaFxUtils {
         itemsBuilder.append(itemBuilder);
       }
 
-      final ClipboardContent clipboardContent = new ClipboardContent();
-      clipboardContent.putString(itemsBuilder.toString());
-      Clipboard.getSystemClipboard().setContent(clipboardContent);
+      copyToClipboard(itemsBuilder.toString());
     }
   }
 
