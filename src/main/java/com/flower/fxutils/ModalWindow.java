@@ -14,6 +14,10 @@ import java.util.function.Function;
 
 public class ModalWindow {
     public static Stage showModal(Event event, Function<Stage, Parent> rootFunction, String title, @Nullable StageStyle stageStyle) {
+        return showModal(event, rootFunction, title, stageStyle, false);
+    }
+
+    public static Stage showModal(Event event, Function<Stage, Parent> rootFunction, String title, @Nullable StageStyle stageStyle, boolean resizable) {
         Window window;
         if (event.getSource() instanceof Stage) {
             window = ((Stage) event.getSource()).getScene().getWindow();
@@ -23,7 +27,7 @@ public class ModalWindow {
             throw new RuntimeException("Unknown event source for Windowed event");
         }
 
-        return showModal(window, rootFunction, title, stageStyle);
+        return showModal(window, rootFunction, title, stageStyle, resizable);
     }
 
     public static Stage showModal(Window window, Function<Stage, Parent> rootFunction, String title, @Nullable StageStyle stageStyle) {
