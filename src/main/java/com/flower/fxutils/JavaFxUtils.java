@@ -70,7 +70,7 @@ public class JavaFxUtils {
   }
 
   public static void showMessage(String title, String header, String context) {
-    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
     alert.setTitle(title);
     alert.setHeaderText(header);
     alert.setContentText(context);
