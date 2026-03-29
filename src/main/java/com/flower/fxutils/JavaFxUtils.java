@@ -4,6 +4,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 public class JavaFxUtils {
   public final static KeyCodeCombination KEY_CODE_COPY1 = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY);
@@ -34,6 +36,18 @@ public class JavaFxUtils {
   public enum YesNo {
     YES,
     NO
+  }
+
+  public static final UnaryOperator<TextFormatter.Change> DECIMAL_TEXT_FILTER = change -> {
+    String newText = change.getControlNewText();
+    if (newText.matches("\\d*([.,]\\d*)?")) {
+      return change;
+    }
+    return null;
+  };
+
+  public static TextFormatter<TextFormatter.Change> createDecimalTextFormatter() {
+    return new TextFormatter<>(DECIMAL_TEXT_FILTER);
   }
 
   public static YesNo showYesNoDialog(String titleHeaderContext) {
@@ -65,12 +79,24 @@ public class JavaFxUtils {
     showMessage(titleHeaderContext, titleHeaderContext);
   }
 
+  public static void showErrorMessage(String titleHeaderContext) {
+    showMessage(titleHeaderContext, Alert.AlertType.ERROR);
+  }
+
+  public static void showMessage(String titleHeaderContext, Alert.AlertType alertType) {
+    showMessage(titleHeaderContext, titleHeaderContext, titleHeaderContext, alertType);
+  }
+
   public static void showMessage(String titleHeader, String context) {
     showMessage(titleHeader, titleHeader, context);
   }
 
   public static void showMessage(String title, String header, String context) {
-    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    showMessage(title, header, context, Alert.AlertType.INFORMATION);
+  }
+
+  public static void showMessage(String title, String header, String context, Alert.AlertType alertType) {
+    Alert alert = new Alert(alertType);
     alert.setTitle(title);
     alert.setHeaderText(header);
     alert.setContentText(context);
