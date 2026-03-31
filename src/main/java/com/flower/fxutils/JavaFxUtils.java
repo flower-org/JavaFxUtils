@@ -41,7 +41,7 @@ public class JavaFxUtils {
 
   public static final UnaryOperator<TextFormatter.Change> DECIMAL_TEXT_FILTER = change -> {
     String newText = change.getControlNewText();
-    if (newText.matches("\\d*([.,]\\d*)?")) {
+    if (newText.matches("\\d*([.]\\d*)?")) {
       return change;
     }
     return null;
